@@ -7,7 +7,7 @@ import { ListEvents, WhenEventFilter } from './input/list.events';
 import { CreateEventDto } from './input/create-event.dto';
 import { User } from 'src/auth/user.entity';
 import { UpdateEventDto } from './input/update-event.dto';
-import { Event } from './event.entity';
+import { Event, PaginatedEvents } from './event.entity';
 
 @Injectable()
 export class EventsService {
@@ -98,7 +98,7 @@ export class EventsService {
   public async getEventsWithAttendeeCountFilteredPaginated(
     filter: ListEvents,
     paginateOptions: PaginateOptions
-  ) {
+  ): Promise<PaginatedEvents> {
     return await paginate(
       await this.getEventsWithAttendeeCountFiltered(filter),
       paginateOptions
@@ -136,5 +136,17 @@ export class EventsService {
       .delete()
       .where('id = :id', { id })
       .execute();
+  }
+
+  public async getEventsOrganizedByUserIdPaginated(userId: number, paginateOptions: PaginateOptions): Promise<PaginatedEvents>{
+    return await paginate<Event>(
+      this.getEventsOrganizedByUserQuery(userId),
+      paginateOptions
+    )
+  }
+
+  private getEventsOrganizedByUserQuery(userId: number) {
+    return this.getEventsBaseQuery()
+      .where('e.organizerId = :userId', { userId });
   }
 }
