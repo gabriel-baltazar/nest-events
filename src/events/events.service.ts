@@ -3,11 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { paginate, PaginateOptions } from 'src/pagination/paginator';
 import { DeleteResult, Repository } from "typeorm";
 import { AttendeeAnswerEnum } from './attendee.entity';
-import { Event } from "./event.entity";
 import { ListEvents, WhenEventFilter } from './input/list.events';
 import { CreateEventDto } from './input/create-event.dto';
 import { User } from 'src/auth/user.entity';
 import { UpdateEventDto } from './input/update-event.dto';
+import { Event } from './event.entity';
 
 @Injectable()
 export class EventsService {

@@ -1,8 +1,7 @@
-import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, Logger, NotFoundException, Param, ParseIntPipe, Patch, Post, Query, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, ClassSerializerInterceptor, Controller, Delete, ForbiddenException, Get, HttpCode, Logger, NotFoundException, Param, ParseIntPipe, Patch, Post, Query, SerializeOptions, UseGuards, UseInterceptors, UsePipes, ValidationPipe } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Like, MoreThan, Repository } from "typeorm";
 import { Attendee } from "./attendee.entity";
-import { Event } from './event.entity';
 import { EventsService } from "./events.service";
 import { CreateEventDto } from './input/create-event.dto';
 import { ListEvents } from "./input/list.events";
@@ -12,6 +11,7 @@ import { CurrentUser } from "src/auth/current-user.decorator";
 import { AuthGuardJwt } from "src/auth/auth-guard.jwt";
 
 @Controller('/events')
+@SerializeOptions({'strategy': 'excludeAll'})
 export class EventsController {
   private readonly logger = new Logger(EventsController.name);
 
@@ -84,6 +84,7 @@ export class EventsController {
   // }
 
   @Get(':id')
+  @UseInterceptors(ClassSerializerInterceptor)
   async findOne(@Param('id', ParseIntPipe) id: number) {
     // console.log(typeof id);
     const event = await this.eventsService.getEvent(id);

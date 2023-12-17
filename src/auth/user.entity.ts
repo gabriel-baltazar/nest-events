@@ -1,27 +1,39 @@
+import { Exclude, Expose } from "class-transformer";
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Event } from './../events/event.entity';
 import { Profile } from "./profile.entity";
-import { Event } from "src/events/event.entity";
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
-    id: number;
-    @Column({ unique: true })
-    username: string;
-    @Column()
-    password: string;
-    @Column({ unique: true })
-    email: string;
-    @Column()
-    firstName: string;
-    @Column()
-    lastName: string;
+  @PrimaryGeneratedColumn()
+  @Expose()
+  id: number;
 
-    @OneToOne(() => Profile)
-    @JoinColumn()
-    profile: Profile;
+  @Column({ unique: true })
+  @Expose()
+  username: string;
 
-    @OneToMany(() => Event, (event) => event.organizer)
-    organized: Event[]
+  @Column()
+  password: string;
 
+  @Column({ unique: true })
+  @Expose()
+  email: string;
+
+  @Column()
+  @Expose()
+  firstName: string;
+
+  @Column()
+  @Expose()
+  lastName: string;
+
+  @OneToOne(() => Profile)
+  @JoinColumn()
+  @Expose()
+  profile: Profile;
+
+  @OneToMany(() => Event, (event) => event.organizer)
+  @Expose()
+  organized: Event[];
 }
