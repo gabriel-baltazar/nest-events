@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query, SerializeOptions, UseInterceptors } from "@nestjs/common";
+import { ClassSerializerInterceptor, Controller, Get, Param, Query, SerializeOptions, UseInterceptors } from "@nestjs/common";
 import { EventsService } from "./events.service";
 
 @Controller('events-organized-by-user/:userId')
